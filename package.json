@@ -1,0 +1,65 @@
+{
+  "name": "@vue-spark/h5-kit",
+  "type": "module",
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.24.0",
+  "description": "Make mobile Vue development simpler and more efficient.",
+  "author": "leihaohao <https://github.com/l246804>",
+  "license": "MIT",
+  "homepage": "https://github.com/vue-spark/h5-kit#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vue-spark/h5-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vue-spark/h5-kit/issues"
+  },
+  "keywords": [],
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier . --write --cache --cache-location ./node_modules/.cache/.prettier-cache",
+    "lint": "eslint . --cache --cache-location ./node_modules/.cache/.eslint-cache",
+    "lint:fix": "pnpm run lint --fix",
+    "release": "bumpp && pnpm publish",
+    "prepublishOnly": "pnpm run build",
+    "prepare": "simple-git-hooks"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^6.2.0",
+    "@sxzz/prettier-config": "^2.2.6",
+    "@tsconfig/node24": "^24.0.0",
+    "@types/node": "^24.10.1",
+    "@vue/tsconfig": "^0.8.1",
+    "bumpp": "^10.3.2",
+    "eslint": "^9.39.1",
+    "eslint-plugin-format": "^1.0.2",
+    "happy-dom": "^20.0.11",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.3",
+    "simple-git-hooks": "^2.13.1",
+    "tsdown": "^0.16.8",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.14"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  }
+}
