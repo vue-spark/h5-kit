@@ -14,14 +14,21 @@
   "bugs": {
     "url": "https://github.com/vue-spark/h5-kit/issues"
   },
-  "keywords": [],
+  "keywords": [
+    "web",
+    "h5",
+    "vue",
+    "mobile",
+    "cordova",
+    "capacitor",
+    "uniapp",
+    "native",
+    "hybrid"
+  ],
   "exports": {
-    ".": "./dist/index.js",
+    ".": "./dist/*.js",
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -40,6 +47,9 @@
     "release": "bumpp && pnpm publish",
     "prepublishOnly": "pnpm run build",
     "prepare": "simple-git-hooks"
+  },
+  "peerDependencies": {
+    "vue": "^3.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.2.0",
