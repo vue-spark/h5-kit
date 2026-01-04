@@ -26,7 +26,7 @@
     "hybrid"
   ],
   "exports": {
-    ".": "./dist/*.js",
+    "./*": "./dist/*.js",
     "./package.json": "./package.json"
   },
   "files": [
