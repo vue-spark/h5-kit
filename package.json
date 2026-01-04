@@ -57,7 +57,8 @@
     "tsdown": "^0.16.8",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.14"
+    "vitest": "^4.0.14",
+    "vue": "^3.5.26"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
