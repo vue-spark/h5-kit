@@ -86,8 +86,8 @@ export const BackHandler = {
       if (self.history.length) {
         const entry = self.history[self.history.length - 1]
         if (entry && entry.condition!()) {
-          self.history.pop()
           entry.handler()
+          self.removeHistory(entry)
         }
       }
       else {

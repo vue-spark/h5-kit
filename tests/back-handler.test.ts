@@ -40,7 +40,7 @@ describe('backHandler Plugin', () => {
     expect(registerPlatformBackListener).toHaveBeenCalledTimes(1)
   })
 
-  it('should call fallback when history is empty', () => {
+  it('should call defaultBackAction when history is empty', () => {
     const app = createApp({})
     const defaultBackAction = vi.fn()
     const registerPlatformBackListener = vi.fn()
@@ -81,7 +81,7 @@ describe('backHandler Plugin', () => {
     expect(defaultBackAction).not.toHaveBeenCalled()
   })
 
-  it('should not pop entry if condition fails', () => {
+  it('should not remove entry if condition fails', () => {
     const app = createApp({})
     const defaultBackAction = vi.fn()
     const registerPlatformBackListener = vi.fn()
@@ -166,6 +166,34 @@ describe('backHandler Plugin', () => {
     }
     BackHandler.addHistory(entry)
     BackHandler.removeHistory(entry)
+
+    expect(onHistoryRemoved).toHaveBeenCalledWith(entry)
+    expect(BackHandler.history).not.toContain(entry)
+
+    BackHandler.addHistory(entry)
+  })
+
+  it('calls onHistoryRemoved when backHandler is called and condition passes', () => {
+    const app = createApp({})
+    const onHistoryRemoved = vi.fn()
+    const defaultBackAction = vi.fn()
+    const registerPlatformBackListener = vi.fn()
+
+    BackHandler.install(app, {
+      defaultBackAction,
+      registerPlatformBackListener,
+      onHistoryRemoved,
+    })
+
+    const entry = {
+      handler: () => {
+      },
+      condition: () => true,
+    }
+    BackHandler.addHistory(entry)
+
+    const backHandler = registerPlatformBackListener.mock.calls[0][0]
+    backHandler()
 
     expect(onHistoryRemoved).toHaveBeenCalledWith(entry)
     expect(BackHandler.history).not.toContain(entry)
