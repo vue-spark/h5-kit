@@ -27,10 +27,16 @@ describe('backHandler Plugin', () => {
     const defaultBackAction = vi.fn()
     const registerPlatformBackListener = vi.fn()
 
-    BackHandler.install(app, { defaultBackAction, registerPlatformBackListener })
+    BackHandler.install(app, {
+      defaultBackAction,
+      registerPlatformBackListener,
+    })
     expect(BackHandler.__installed).toBe(true)
 
-    BackHandler.install(app, { defaultBackAction, registerPlatformBackListener })
+    BackHandler.install(app, {
+      defaultBackAction,
+      registerPlatformBackListener,
+    })
     expect(registerPlatformBackListener).toHaveBeenCalledTimes(1)
   })
 
@@ -39,7 +45,10 @@ describe('backHandler Plugin', () => {
     const defaultBackAction = vi.fn()
     const registerPlatformBackListener = vi.fn()
 
-    BackHandler.install(app, { defaultBackAction, registerPlatformBackListener })
+    BackHandler.install(app, {
+      defaultBackAction,
+      registerPlatformBackListener,
+    })
 
     // Extract the handler passed to registerBackHandler
     const backHandler = registerPlatformBackListener.mock.calls[0][0]
@@ -55,7 +64,10 @@ describe('backHandler Plugin', () => {
     const handler = vi.fn()
     const condition = vi.fn().mockReturnValue(true)
 
-    BackHandler.install(app, { defaultBackAction, registerPlatformBackListener })
+    BackHandler.install(app, {
+      defaultBackAction,
+      registerPlatformBackListener,
+    })
 
     BackHandler.addHistory({ handler, condition })
     expect(BackHandler.__history.length).toBe(1)
@@ -76,7 +88,10 @@ describe('backHandler Plugin', () => {
     const handler = vi.fn()
     const condition = vi.fn().mockReturnValue(false)
 
-    BackHandler.install(app, { defaultBackAction, registerPlatformBackListener })
+    BackHandler.install(app, {
+      defaultBackAction,
+      registerPlatformBackListener,
+    })
     BackHandler.addHistory({ handler, condition })
 
     const backHandler = registerPlatformBackListener.mock.calls[0][0]
@@ -92,7 +107,10 @@ describe('backHandler Plugin', () => {
     const defaultBackAction = vi.fn()
     const registerPlatformBackListener = vi.fn()
 
-    BackHandler.install(app, { defaultBackAction, registerPlatformBackListener })
+    BackHandler.install(app, {
+      defaultBackAction,
+      registerPlatformBackListener,
+    })
     expect(BackHandler.__installed).toBe(true)
 
     // Simulate app unmount
@@ -104,6 +122,29 @@ describe('backHandler Plugin', () => {
     // But we can test that methods are disabled
     expect(typeof BackHandler.addHistory).toBe('function')
     // Note: actual cleanup is tested via beforeEach reset
+  })
+
+  it('calls onHistoryAdded when entry is added', () => {
+    const app = createApp({})
+    const onHistoryAdded = vi.fn()
+    const defaultBackAction = vi.fn()
+    const registerPlatformBackListener = vi.fn()
+
+    BackHandler.install(app, {
+      defaultBackAction,
+      registerPlatformBackListener,
+      onHistoryAdded,
+    })
+
+    const entry = {
+      handler: () => {
+      },
+      condition: () => true,
+    }
+    BackHandler.addHistory(entry)
+
+    expect(onHistoryAdded).toHaveBeenCalledWith(entry)
+    expect(BackHandler.__history).toContain(entry)
   })
 })
 
@@ -119,7 +160,11 @@ describe('useBackHandler composable', () => {
     const hide = vi.fn()
     const hideOnRouteChange = ref(true)
 
-    const { addToHistory, removeFromHistory } = useBackHandler(showing, hide, hideOnRouteChange)
+    const { addToHistory, removeFromHistory } = useBackHandler(
+      showing,
+      hide,
+      hideOnRouteChange,
+    )
 
     addToHistory()
     expect(BackHandler.__history.length).toBe(1)
