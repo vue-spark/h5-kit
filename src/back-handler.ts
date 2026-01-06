@@ -34,13 +34,13 @@ export interface BackHandlerOptions {
 
 export const BackHandler = {
   /**
-   * @internal
+   * Whether the plugin is installed.
    */
-  __installed: false,
+  installed: false,
   /**
-   * @internal
+   * Stack of history entries.
    */
-  __history: [] as BackHandlerHistoryEntry[],
+  history: [] as BackHandlerHistoryEntry[],
   /**
    * Add a history entry.
    */
@@ -54,22 +54,22 @@ export const BackHandler = {
    */
   install(app: App, options: BackHandlerOptions) {
     const self = BackHandler
-    if (self.__installed || !isBrowser) {
+    if (self.installed || !isBrowser) {
       return
     }
 
-    self.__installed = true
+    self.installed = true
 
     self.addHistory = (entry) => {
       entry.condition ??= getTrue
-      self.__history.push(entry)
+      self.history.push(entry)
       options.onHistoryAdded?.(entry)
     }
 
     self.removeHistory = (entry) => {
-      const index = self.__history.indexOf(entry)
+      const index = self.history.indexOf(entry)
       if (index > -1) {
-        self.__history.splice(index, 1)
+        self.history.splice(index, 1)
         options.onHistoryRemoved?.(entry)
       }
     }
@@ -78,15 +78,15 @@ export const BackHandler = {
       self.addHistory = noop
       self.removeHistory = noop
 
-      self.__history = []
-      self.__installed = false
+      self.history = []
+      self.installed = false
     })
 
     const backHandler = (): void => {
-      if (self.__history.length) {
-        const entry = self.__history[self.__history.length - 1]
+      if (self.history.length) {
+        const entry = self.history[self.history.length - 1]
         if (entry && entry.condition!()) {
-          self.__history.pop()
+          self.history.pop()
           entry.handler()
         }
       }

@@ -11,14 +11,14 @@ vi.stubGlobal('window', {
 describe('backHandler Plugin', () => {
   beforeEach(() => {
     // Reset plugin state before each test
-    if (BackHandler.__installed) {
+    if (BackHandler.installed) {
       // Simulate app unmount cleanup
       BackHandler.addHistory = () => {
       }
       BackHandler.removeHistory = () => {
       }
-      BackHandler.__history = []
-      BackHandler.__installed = false
+      BackHandler.history = []
+      BackHandler.installed = false
     }
   })
 
@@ -31,7 +31,7 @@ describe('backHandler Plugin', () => {
       defaultBackAction,
       registerPlatformBackListener,
     })
-    expect(BackHandler.__installed).toBe(true)
+    expect(BackHandler.installed).toBe(true)
 
     BackHandler.install(app, {
       defaultBackAction,
@@ -70,14 +70,14 @@ describe('backHandler Plugin', () => {
     })
 
     BackHandler.addHistory({ handler, condition })
-    expect(BackHandler.__history.length).toBe(1)
+    expect(BackHandler.history.length).toBe(1)
 
     const backHandler = registerPlatformBackListener.mock.calls[0][0]
     backHandler()
 
     expect(handler).toHaveBeenCalled()
     expect(condition).toHaveBeenCalled()
-    expect(BackHandler.__history.length).toBe(0)
+    expect(BackHandler.history.length).toBe(0)
     expect(defaultBackAction).not.toHaveBeenCalled()
   })
 
@@ -98,7 +98,7 @@ describe('backHandler Plugin', () => {
     backHandler()
 
     expect(handler).not.toHaveBeenCalled()
-    expect(BackHandler.__history.length).toBe(1)
+    expect(BackHandler.history.length).toBe(1)
     expect(defaultBackAction).not.toHaveBeenCalled()
   })
 
@@ -111,7 +111,7 @@ describe('backHandler Plugin', () => {
       defaultBackAction,
       registerPlatformBackListener,
     })
-    expect(BackHandler.__installed).toBe(true)
+    expect(BackHandler.installed).toBe(true)
 
     // Simulate app unmount
     app._instance = {} as any
@@ -144,7 +144,7 @@ describe('backHandler Plugin', () => {
     BackHandler.addHistory(entry)
 
     expect(onHistoryAdded).toHaveBeenCalledWith(entry)
-    expect(BackHandler.__history).toContain(entry)
+    expect(BackHandler.history).toContain(entry)
   })
 
   it('calls onHistoryRemoved when entry is removed', () => {
@@ -168,7 +168,7 @@ describe('backHandler Plugin', () => {
     BackHandler.removeHistory(entry)
 
     expect(onHistoryRemoved).toHaveBeenCalledWith(entry)
-    expect(BackHandler.__history).not.toContain(entry)
+    expect(BackHandler.history).not.toContain(entry)
   })
 })
 
@@ -176,7 +176,7 @@ describe('useBackHandler composable', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     // Reset BackHandler history
-    BackHandler.__history = []
+    BackHandler.history = []
   })
 
   it('adds and removes history entry correctly', () => {
@@ -191,13 +191,13 @@ describe('useBackHandler composable', () => {
     )
 
     addToHistory()
-    expect(BackHandler.__history.length).toBe(1)
-    const entry = BackHandler.__history[0]
+    expect(BackHandler.history.length).toBe(1)
+    const entry = BackHandler.history[0]
     expect(entry.condition!()).toBe(true)
     expect(entry.handler).toBe(hide)
 
     removeFromHistory()
-    expect(BackHandler.__history.length).toBe(0)
+    expect(BackHandler.history.length).toBe(0)
   })
 
   it('condition is reactive', () => {
@@ -208,7 +208,7 @@ describe('useBackHandler composable', () => {
     const { addToHistory } = useBackHandler(showing, hide, hideOnRouteChange)
     addToHistory()
 
-    const entry = BackHandler.__history[0]
+    const entry = BackHandler.history[0]
 
     expect(entry.condition!()).toBe(true)
 
@@ -227,12 +227,12 @@ describe('useBackHandler composable', () => {
       addToHistory() // manually add
     })
 
-    expect(BackHandler.__history.length).toBe(1)
+    expect(BackHandler.history.length).toBe(1)
 
     scope.stop()
     await nextTick()
 
-    expect(BackHandler.__history.length).toBe(1) // still there!
+    expect(BackHandler.history.length).toBe(1) // still there!
   })
 
   it('auto-removes on dispose if showing is true', async () => {
@@ -246,11 +246,11 @@ describe('useBackHandler composable', () => {
       addToHistory() // manually add
     })
 
-    expect(BackHandler.__history.length).toBe(1)
+    expect(BackHandler.history.length).toBe(1)
 
     scope.stop()
     await nextTick()
 
-    expect(BackHandler.__history.length).toBe(0)
+    expect(BackHandler.history.length).toBe(0)
   })
 })
