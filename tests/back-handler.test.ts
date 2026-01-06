@@ -146,6 +146,30 @@ describe('backHandler Plugin', () => {
     expect(onHistoryAdded).toHaveBeenCalledWith(entry)
     expect(BackHandler.__history).toContain(entry)
   })
+
+  it('calls onHistoryRemoved when entry is removed', () => {
+    const app = createApp({})
+    const onHistoryRemoved = vi.fn()
+    const defaultBackAction = vi.fn()
+    const registerPlatformBackListener = vi.fn()
+
+    BackHandler.install(app, {
+      defaultBackAction,
+      registerPlatformBackListener,
+      onHistoryRemoved,
+    })
+
+    const entry = {
+      handler: () => {
+      },
+      condition: () => true,
+    }
+    BackHandler.addHistory(entry)
+    BackHandler.removeHistory(entry)
+
+    expect(onHistoryRemoved).toHaveBeenCalledWith(entry)
+    expect(BackHandler.__history).not.toContain(entry)
+  })
 })
 
 describe('useBackHandler composable', () => {

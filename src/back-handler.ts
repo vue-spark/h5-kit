@@ -19,6 +19,10 @@ export interface BackHandlerOptions {
    */
   onHistoryAdded?: (entry: BackHandlerHistoryEntry) => void
   /**
+   * Called when a history entry is removed.
+   */
+  onHistoryRemoved?: (entry: BackHandlerHistoryEntry) => void
+  /**
    * Called when the back button is pressed and there's no active custom handler.
    */
   defaultBackAction: () => void
@@ -66,6 +70,7 @@ export const BackHandler = {
       const index = self.__history.indexOf(entry)
       if (index > -1) {
         self.__history.splice(index, 1)
+        options.onHistoryRemoved?.(entry)
       }
     }
 
