@@ -1,4 +1,8 @@
-# h5-kit
+# ~~h5-kit~~
+
+> [!已废弃]
+>
+> 该项目已废弃。请使用 [@vue-spark/back-handler](https://github.com/vue-spark/back-handler) 代替。
 
 让移动端 Vue 开发更简单、更高效。
 

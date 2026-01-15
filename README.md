@@ -1,4 +1,8 @@
-# h5-kit
+# ~~h5-kit~~
+
+> [!Deprecated]
+>
+> This project has been deprecated. Please use [@vue-spark/back-handler](https://github.com/vue-spark/back-handler) instead.
 
 Make mobile Vue development simpler and more efficient.
 
